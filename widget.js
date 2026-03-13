@@ -206,6 +206,7 @@ document.body.appendChild(panel);
 const messages = panel.querySelector("#ms-chatbot-messages");
 const input = panel.querySelector("input");
 const send = panel.querySelector("button");
+let isWaitingForReply = false;
 
 /* -----------------------------
 MESSAGE RENDER
@@ -213,11 +214,13 @@ MESSAGE RENDER
 
 function addMessage(text, cls){
 
-const div=document.createElement("div");
-div.className="ms-msg "+cls;
+const div = document.createElement("div");
+div.className = "ms-msg " + cls;
 
-const span=document.createElement("span");
-span.textContent=text;
+const span = document.createElement("span");
+
+// preserve formatting from AI
+span.innerHTML = text.replace(/\n/g,"<br>");
 
 div.appendChild(span);
 messages.appendChild(div);
@@ -233,10 +236,17 @@ SEND MESSAGE
 
 async function sendMessage(){
 
-const text=input.value.trim();
+if(isWaitingForReply) return;
+
+const text = input.value.trim();
 if(!text) return;
 
 const sessionId = getSessionId();
+
+isWaitingForReply = true;
+
+input.disabled = true;
+send.disabled = true;
 
 addMessage(text,"ms-user");
 input.value="";
@@ -275,6 +285,12 @@ addMessage(
 );
 
 }
+
+isWaitingForReply = false;
+
+input.disabled = false;
+send.disabled = false;
+input.focus();
 
 }
 
