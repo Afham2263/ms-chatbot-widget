@@ -227,9 +227,20 @@ div.className = "ms-msg " + cls;
 const span = document.createElement("span");
 
 // preserve formatting from AI
-span.innerHTML = text
-  .replace(/\n/g,"<br>")
-  .replace(/\*\*(.*?)\*\*/g,"<strong>$1</strong>");
+function formatMessage(text){
+
+return text
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/\n/g,"<br>")
+.replace(/\*\*(.*?)\*\*/g,"<strong>$1</strong>")
+.replace(/\*(.*?)\*/g,"<em>$1</em>")
+.replace(/^\d+\.\s(.+)/gm,"<strong>$&</strong>");
+
+}
+
+
+span.innerHTML = formatMessage(text);
 
 div.appendChild(span);
 messages.appendChild(div);
