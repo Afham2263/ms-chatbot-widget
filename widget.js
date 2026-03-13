@@ -54,7 +54,7 @@ position:fixed;
 bottom:100px;
 right:24px;
 width:360px;
-height:520px;
+height:560px;
 background:white;
 border-radius:16px;
 box-shadow:0 20px 60px rgba(0,0,0,0.25);
@@ -88,6 +88,7 @@ padding:14px;
 overflow-y:auto;
 background:#f8fafc;
 font-size:14px;
+scroll-behavior:smooth;
 }
 
 .ms-msg{
@@ -102,17 +103,23 @@ justify-content:flex-end;
 .ms-user span{
 background:#2563eb;
 color:white;
-padding:10px 12px;
+padding:12px 14px;
 border-radius:12px 12px 4px 12px;
-max-width:70%;
+max-width:85%;
+line-height:1.5;
+white-space:pre-wrap;
+word-break:break-word;
 }
 
 .ms-bot span{
 background:white;
 border:1px solid #e5e7eb;
-padding:10px 12px;
+padding:12px 14px;
 border-radius:12px 12px 12px 4px;
-max-width:70%;
+max-width:85%;
+line-height:1.5;
+white-space:pre-wrap;
+word-break:break-word;
 }
 
 .ms-typing span{
@@ -220,7 +227,9 @@ div.className = "ms-msg " + cls;
 const span = document.createElement("span");
 
 // preserve formatting from AI
-span.innerHTML = text.replace(/\n/g,"<br>");
+span.innerHTML = text
+  .replace(/\n/g,"<br>")
+  .replace(/\*\*(.*?)\*\*/g,"<strong>$1</strong>");
 
 div.appendChild(span);
 messages.appendChild(div);
